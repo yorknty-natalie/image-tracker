@@ -1,5 +1,12 @@
 const trackerData = [
     {
+        id: "root-bird",
+        title: "Traditional Bird Collection",
+        date: "2026-02-03",
+        fileId: "1q0L6GhfmEwnAkKcNPh_m16xWXuOa5uwm",
+        children: []
+    },
+    {
         id: "root-1",
         title: "Valentino Inspiration",
         date: "2026-01-30",
@@ -53,16 +60,5 @@ const trackerData = [
                         ]
                     }
         ]
-    },
-    { id: "root-2", title: "Test Root 2", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-3", title: "Test Root 3", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-4", title: "Test Root 4", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-5", title: "Test Root 5", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-6", title: "Test Root 6", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-7", title: "Test Root 7", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-8", title: "Test Root 8", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-9", title: "Test Root 9", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-10", title: "Test Root 10", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-11", title: "Test Root 11", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] },
-    { id: "root-12", title: "Test Root 12", date: "2026-02-03", fileId: "1qu4C0XYOxCpMU5p1_uXfx_Rxeq1G_acd", children: [] }
+    }
 ];
