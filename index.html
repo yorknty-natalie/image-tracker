@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="header-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
+    </div>
+
     <div id="tree-canvas" class="canvas">
         <svg id="svg-connectors" class="connector-svg"></svg>
         <div id="tree-root" class="tree-container"></div>
@@ -19,6 +23,28 @@
 
     <script src="tracker_data.js"></script>
     <script>
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('theme-btn');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                btn.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize Theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-btn').textContent = '☀️ Light Mode';
+        }
+
         function createNodeElement(data) {
             const wrapper = document.createElement('div');
             wrapper.className = 'node-wrapper';

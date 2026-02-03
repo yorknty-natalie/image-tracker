@@ -1,13 +1,25 @@
 :root {
+    /* Light Theme */
     --bg-color: #f1f5f9;
     --card-bg: #ffffff;
     --text-primary: #0f172a;
     --text-secondary: #64748b;
     --accent-color: #3b82f6;
     --line-color: #cbd5e1;
+    --border-color: #e2e8f0;
     --node-width: 220px;
     --node-gap-x: 100px;
     --node-gap-y: 40px;
+}
+
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent-color: #60a5fa;
+    --line-color: #475569;
+    --border-color: #334155;
 }
 
 body {
@@ -15,13 +27,40 @@ body {
     background-color: var(--bg-color);
     color: var(--text-primary);
     margin: 0;
-    padding: 40px;
+    padding: 20px 40px 40px 40px;
     overflow: auto;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    position: sticky;
+    left: 0;
+    z-index: 100;
+}
+
+.theme-toggle {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-color);
 }
 
 .canvas {
     position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: flex-start;
 }
 
@@ -51,9 +90,9 @@ body {
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     padding: 10px;
     z-index: 10;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, border-color 0.2s;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 2px solid var(--border-color);
 }
 
 .node:hover {
@@ -79,6 +118,7 @@ body {
     font-weight: 700;
     font-size: 0.85rem;
     margin-bottom: 2px;
+    color: var(--text-primary);
 }
 
 .node-date {
@@ -101,6 +141,7 @@ body {
     fill: none;
     stroke: var(--line-color);
     stroke-width: 2px;
+    transition: stroke 0.3s;
 }
 
 /* Modal */
