@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tracker - Design Evolution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="tree-canvas" class="canvas">
+        <svg id="svg-connectors" class="connector-svg"></svg>
+        <div id="tree-root" class="tree-container"></div>
+    </div>
+
+    <div id="modal" class="modal" onclick="closeModal()">
+        <img id="modal-img" class="modal-content">
+    </div>
+
+    <script src="tracker_data.js"></script>
+    <script>
+        function createNodeElement(data) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'node-wrapper';
+            wrapper.id = `wrapper-${data.id}`;
+
+            const node = document.createElement('div');
+            node.className = 'node';
+            node.id = `node-${data.id}`;
+            
+            const thumbUrl = `https://drive.google.com/thumbnail?id=${data.fileId}&sz=w600`;
+            const fullUrl = `https://drive.google.com/thumbnail?id=${data.fileId}&sz=w4000`;
+            
+            node.onclick = (e) => {
+                e.stopPropagation();
+                openModal(fullUrl);
+            };
+
+            node.innerHTML = `
+                <img src="${thumbUrl}" class="node-image" alt="${data.title}">
+                <div class="node-info">
+                    <span class="node-title">${data.title}</span>
+                    <span class="node-date">${data.date}</span>
+                </div>
+            `;
+
+            wrapper.appendChild(node);
+
+            if (data.children && data.children.length > 0) {
+                const childrenGroup = document.createElement('div');
+                childrenGroup.className = 'node-group';
+                childrenGroup.style.marginLeft = 'var(--node-gap-x)';
+                
+                data.children.forEach(child => {
+                    childrenGroup.appendChild(createNodeElement(child));
+                });
+                
+                wrapper.appendChild(childrenGroup);
+            }
+
+            return wrapper;
+        }
+
+        function drawConnectors() {
+            const svg = document.getElementById('svg-connectors');
+            const canvas = document.getElementById('tree-canvas');
+            svg.innerHTML = '';
+            
+            // Set SVG size to canvas size
+            const rect = canvas.getBoundingClientRect();
+            svg.setAttribute('width', canvas.scrollWidth);
+            svg.setAttribute('height', canvas.scrollHeight);
+
+            function connect(parentData) {
+                const parentNode = document.getElementById(`node-${parentData.id}`);
+                if (!parentNode) return;
+
+                const pRect = parentNode.getBoundingClientRect();
+                const cRect = canvas.getBoundingClientRect();
+
+                const startX = pRect.right - cRect.left;
+                const startY = pRect.top + pRect.height / 2 - cRect.top;
+
+                parentData.children.forEach(child => {
+                    const childNode = document.getElementById(`node-${child.id}`);
+                    if (!childNode) return;
+
+                    const chRect = childNode.getBoundingClientRect();
+                    const endX = chRect.left - cRect.left;
+                    const endY = chRect.top + chRect.height / 2 - cRect.top;
+
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    const cp1x = startX + (endX - startX) / 2;
+                    const d = `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp1x} ${endY}, ${endX} ${endY}`;
+                    
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'line');
+                    svg.appendChild(path);
+
+                    connect(child);
+                });
+            }
+
+            connect(trackerData);
+        }
+
+        function openModal(url) {
+            const modal = document.getElementById('modal');
+            const img = document.getElementById('modal-img');
+            modal.style.display = 'flex';
+            img.src = url;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Initialize
+        const rootContainer = document.getElementById('tree-root');
+        rootContainer.appendChild(createNodeElement(trackerData));
+
+        // Initial draw and redraw on resize
+        window.onload = () => setTimeout(drawConnectors, 500);
+        window.onresize = drawConnectors;
+    </script>
+</body>
+</html>
