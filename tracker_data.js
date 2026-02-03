@@ -1,5 +1,12 @@
 const trackerData = [
     {
+        id: "root-dress",
+        title: "Traditional Couture Gown",
+        date: "2026-02-03",
+        fileId: "1KK6UiGyjr-dAxj44JbkawhmdubrnDEBr",
+        children: []
+    },
+    {
         id: "root-bird",
         title: "Traditional Bird Collection",
         date: "2026-02-03",
