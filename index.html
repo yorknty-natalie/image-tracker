@@ -67,27 +67,29 @@
             svg.innerHTML = '';
             
             // Set SVG size to canvas size
-            const rect = canvas.getBoundingClientRect();
             svg.setAttribute('width', canvas.scrollWidth);
             svg.setAttribute('height', canvas.scrollHeight);
 
             function connect(parentData) {
+                if (!parentData.children) return;
+
                 const parentNode = document.getElementById(`node-${parentData.id}`);
                 if (!parentNode) return;
 
+                const canvasRect = canvas.getBoundingClientRect();
                 const pRect = parentNode.getBoundingClientRect();
-                const cRect = canvas.getBoundingClientRect();
 
-                const startX = pRect.right - cRect.left;
-                const startY = pRect.top + pRect.height / 2 - cRect.top;
+                // Correct coordinates relative to the scrollable canvas
+                const startX = pRect.right - canvasRect.left + canvas.scrollLeft;
+                const startY = pRect.top + pRect.height / 2 - canvasRect.top + canvas.scrollTop;
 
                 parentData.children.forEach(child => {
                     const childNode = document.getElementById(`node-${child.id}`);
                     if (!childNode) return;
 
                     const chRect = childNode.getBoundingClientRect();
-                    const endX = chRect.left - cRect.left;
-                    const endY = chRect.top + chRect.height / 2 - cRect.top;
+                    const endX = chRect.left - canvasRect.left + canvas.scrollLeft;
+                    const endY = chRect.top + chRect.height / 2 - canvasRect.top + canvas.scrollTop;
 
                     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                     const cp1x = startX + (endX - startX) / 2;
@@ -101,7 +103,7 @@
                 });
             }
 
-            connect(trackerData);
+            trackerData.forEach(root => connect(root));
         }
 
         function openModal(url) {
@@ -117,10 +119,16 @@
 
         // Initialize
         const rootContainer = document.getElementById('tree-root');
-        rootContainer.appendChild(createNodeElement(trackerData));
+        const mainGroup = document.createElement('div');
+        mainGroup.className = 'node-group';
+        rootContainer.appendChild(mainGroup);
+        
+        trackerData.forEach(root => {
+            mainGroup.appendChild(createNodeElement(root));
+        });
 
         // Initial draw and redraw on resize
-        window.onload = () => setTimeout(drawConnectors, 500);
+        window.onload = () => setTimeout(drawConnectors, 800);
         window.onresize = drawConnectors;
     </script>
 </body>
