@@ -18,7 +18,7 @@ Whenever the user says **"把這張圖改成傳統"** and provides an image or t
 *   Send the image back to the user on Telegram immediately.
 
 ### 4. Cloud Backup
-*   Upload the image to Google Drive (folder: `image tracker`).
+*   Upload the image to Google Drive (folder: `x trend photo`).
 
 ### 5. Tracker Hierarchy
 *   **Case A (New Root)**: If the request is independent, add a new **root** entry to `Project/ImageTracker/tracker_data.js`.
