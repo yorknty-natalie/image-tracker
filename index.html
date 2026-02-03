@@ -9,6 +9,11 @@
 </head>
 <body>
     <div class="header-actions">
+        <div class="pagination-container">
+            <button id="prev-page" class="page-btn" onclick="changePage(-1)">Previous</button>
+            <span id="page-info" class="page-info">Page 1 / 1</span>
+            <button id="next-page" class="page-btn" onclick="changePage(1)">Next</button>
+        </div>
         <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
     </div>
 
@@ -143,15 +148,44 @@
             document.getElementById('modal').style.display = 'none';
         }
 
+        // Pagination Logic
+        let currentPage = 1;
+        const rootsPerPage = 5;
+
+        function renderTree() {
+            const rootContainer = document.getElementById('tree-root');
+            rootContainer.innerHTML = '';
+            
+            const mainGroup = document.createElement('div');
+            mainGroup.className = 'node-group';
+            rootContainer.appendChild(mainGroup);
+
+            const totalPages = Math.ceil(trackerData.length / rootsPerPage);
+            const start = (currentPage - 1) * rootsPerPage;
+            const end = start + rootsPerPage;
+            const pagedData = trackerData.slice(start, end);
+
+            pagedData.forEach(root => {
+                mainGroup.appendChild(createNodeElement(root));
+            });
+
+            // Update UI
+            document.getElementById('page-info').textContent = `Page ${currentPage} / ${totalPages}`;
+            document.getElementById('prev-page').disabled = (currentPage <= 1);
+            document.getElementById('next-page').disabled = (currentPage >= totalPages);
+
+            // Redraw connectors after rendering
+            setTimeout(drawConnectors, 500);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderTree();
+            window.scrollTo(0, 0);
+        }
+
         // Initialize
-        const rootContainer = document.getElementById('tree-root');
-        const mainGroup = document.createElement('div');
-        mainGroup.className = 'node-group';
-        rootContainer.appendChild(mainGroup);
-        
-        trackerData.forEach(root => {
-            mainGroup.appendChild(createNodeElement(root));
-        });
+        renderTree();
 
         // Initial draw and redraw on resize
         window.onload = () => setTimeout(drawConnectors, 800);
